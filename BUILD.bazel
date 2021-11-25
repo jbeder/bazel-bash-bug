@@ -1,0 +1,21 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
+load("@bazel_gazelle//:def.bzl", "gazelle")
+
+# gazelle:prefix github.com/jbeder/bazel-bash-bug
+# gazelle:exclude node_modules/**
+gazelle(name = "gazelle")
+
+go_library(
+    name = "bazel-bash-bug",
+    srcs = ["fb.go"],
+    data = ["@npm//firebase-tools/bin:firebase"],
+    importpath = "github.com/jbeder/bazel-bash-bug",
+    visibility = ["//visibility:public"],
+    deps = ["@io_bazel_rules_go//go/tools/bazel:go_default_library"],
+)
+
+go_test(
+    name = "bazel-bash-bug_test",
+    srcs = ["fb_test.go"],
+    embed = [":bazel-bash-bug"],
+)
